@@ -1,25 +1,25 @@
 SELECT * FROM countries
 LIMIT 10;
 
---Question 3:
+--Question 3:How many entries in the countries table are from Africa?
 SELECT continent, COUNT(name)
 FROM countries
 GROUP BY 1;
---
+--Answer: 56
 
 SELECT * FROM population_years
 LIMIT 10;
 
---Question 4:
+--Question 4:What was the total population of the continent of Oceania in 2005?
 SELECT population_years.year, countries.continent, ROUND(SUM(population_years.population),2) AS 'population (in millions)'
 FROM population_years
 JOIN countries
 ON population_years.country_id = countries.id
 WHERE population_years.year = 2005
 GROUP BY countries.continent;
---
+--Answer: 32.66 million
 
---Question 5:
+--Question 5:What is the average population of countries in South America in 2003?
 SELECT countries.continent, 
 ROUND(AVG(population_years.population), 2) AS 'average population per country in 2003 (in millions)'
 FROM population_years
@@ -27,9 +27,9 @@ JOIN countries
 ON population_years.country_id = countries.id
 WHERE population_years.year = 2003
 GROUP BY countries.continent;
---
+--Answer: 25.89 million
 
---Question 6:
+--Question 6:What country had the smallest population in 2007?
 WITH countries_population AS (
   SELECT * 
   FROM countries
@@ -39,7 +39,7 @@ WITH countries_population AS (
 SELECT name AS 'country', MIN(population) AS 'smallest population in 2007 (in millions)'
 FROM countries_population
 WHERE year = 2007;
---
+--Answer: Niue with 2,160 people
 
 SELECT * FROM countries
 WHERE name LIKE 'P%';
@@ -47,7 +47,7 @@ WHERE name LIKE 'P%';
 SELECT MIN(year), MAX(year)
 FROM population_years;
 
---Question 7:
+--Question 7:What is the average population of Poland during the time period covered by this dataset?
 WITH countries_population AS (
   SELECT * 
   FROM countries
@@ -57,19 +57,19 @@ WITH countries_population AS (
 SELECT name, AVG(population) AS 'average population from 2000-2010'
 FROM countries_population
 WHERE country_id = 76;
---
+--Answer: 38.56 million
 
---Question 8:
+--Question 8:How many countries have the word “The” in their name?
 SELECT COUNT(name) AS 'countries with "The" in their name'
 FROM countries
 WHERE name LIKE '% the%';
---
+--Answer: 2
 
 SELECT name AS 'countries with "The" in their name'
 FROM countries
 WHERE name LIKE '% the%';
 
--- Question 9:
+-- Question 9:What was the total population of each continent in 2010?
 WITH countries_population AS (
   SELECT * 
   FROM countries
@@ -81,3 +81,5 @@ FROM countries_population
 WHERE year = 2010
 GROUP BY continent
 ORDER BY 2 DESC;
+--Answer in query table
+
