@@ -1,0 +1,83 @@
+SELECT * FROM countries
+LIMIT 10;
+
+--Question 3:
+SELECT continent, COUNT(name)
+FROM countries
+GROUP BY 1;
+--
+
+SELECT * FROM population_years
+LIMIT 10;
+
+--Question 4:
+SELECT population_years.year, countries.continent, ROUND(SUM(population_years.population),2) AS 'population (in millions)'
+FROM population_years
+JOIN countries
+ON population_years.country_id = countries.id
+WHERE population_years.year = 2005
+GROUP BY countries.continent;
+--
+
+--Question 5:
+SELECT countries.continent, 
+ROUND(AVG(population_years.population), 2) AS 'average population per country in 2003 (in millions)'
+FROM population_years
+JOIN countries
+ON population_years.country_id = countries.id
+WHERE population_years.year = 2003
+GROUP BY countries.continent;
+--
+
+--Question 6:
+WITH countries_population AS (
+  SELECT * 
+  FROM countries
+  JOIN population_years
+  ON countries.id = population_years.country_id
+)
+SELECT name AS 'country', MIN(population) AS 'smallest population in 2007 (in millions)'
+FROM countries_population
+WHERE year = 2007;
+--
+
+SELECT * FROM countries
+WHERE name LIKE 'P%';
+
+SELECT MIN(year), MAX(year)
+FROM population_years;
+
+--Question 7:
+WITH countries_population AS (
+  SELECT * 
+  FROM countries
+  JOIN population_years
+  ON countries.id = population_years.country_id
+)
+SELECT name, AVG(population) AS 'average population from 2000-2010'
+FROM countries_population
+WHERE country_id = 76;
+--
+
+--Question 8:
+SELECT COUNT(name) AS 'countries with "The" in their name'
+FROM countries
+WHERE name LIKE '% the%';
+--
+
+SELECT name AS 'countries with "The" in their name'
+FROM countries
+WHERE name LIKE '% the%';
+
+-- Question 9:
+WITH countries_population AS (
+  SELECT * 
+  FROM countries
+  JOIN population_years
+  ON countries.id = population_years.country_id
+)
+SELECT continent, SUM(population) AS 'total population in 2010 (in millions)'
+FROM countries_population
+WHERE year = 2010
+GROUP BY continent
+ORDER BY 2 DESC;
